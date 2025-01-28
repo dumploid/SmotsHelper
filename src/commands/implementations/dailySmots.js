@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { getVideoCount, getLatestVideo } = require("../../assets/youtubeAPI");
+const { getVideoCount, getLatestVideo } = require("../../utils/youtubeAPI");
 const { CHANNEL_ID } = require('../../../config.json');
 
 module.exports = {

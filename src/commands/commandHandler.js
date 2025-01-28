@@ -1,10 +1,10 @@
 const { Events, MessageFlags } = require('discord.js');
 
-function initiateCommand(client, command) {
+function initiateCommand(command, registeredCommands) {
     if (command === undefined) throw new Error(`Command must not be undefined`);
     if (command.data === undefined) throw new Error(`A provided command is missing data`);
     if (command.execute === undefined) console.log(`${command.data.name} does not have an execute function.`);
-    client.commands.set(command.data.name, command);
+    registeredCommands.set(command.data.name, command);
 }
 
 function initCommandEvent(client) {

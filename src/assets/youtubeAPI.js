@@ -2,29 +2,29 @@ const { YOUTUBE_KEY } = require("../../config.json");
 const { google } = require('googleapis');
 
 // Initialize the YouTube API client with the API key from environment variables
-const youtube = google.youtube({
+const youtubeAPI = google.youtube({
     version: 'v3',
-    auth: YOUTUBE_KEY, // API key stored in .env
+    auth: YOUTUBE_KEY // as stored in config.json
 });
 
 // Function to get the latest video posted on the channel
-async function getLatestVideo(channelId) {
+async function getLatestVideo(channelID) {
     try {
-        const res = await youtube.channels.list({
+        const response = await youtubeAPI.channels.list({
             part: 'contentDetails',
-            id: channelId,
+            id: channelID,
         });
 
-        const playlistId = res.data.items[0].contentDetails.relatedPlaylists.uploads;
+        const playlistID = response.data.items[0].contentDetails.relatedPlaylists.uploads;
 
         // Retrieve the latest video from the upload playlist
-        const latestVideoRes = await youtube.playlistItems.list({
+        const latestVideoResponse = await youtubeAPI.playlistItems.list({
             part: 'snippet',
-            playlistId: playlistId,
+            playlistId: playlistID,
             maxResults: 1, // Only get the latest video
         });
 
-        const latestVideo = latestVideoRes.data.items[0].snippet;
+        const latestVideo = latestVideoResponse.data.items[0].snippet;
         return {
             title: latestVideo.title,
             videoId: latestVideo.resourceId.videoId,
@@ -36,20 +36,20 @@ async function getLatestVideo(channelId) {
 }
 
 // Function to get the nth oldest video ever posted on the channel
-async function getNthVideo(channelId, n) {
+async function getNthVideo(channelID, n) {
     try {
         let videos = [];
         let nextPageToken = null;
-        const res = await youtube.channels.list({
+        const response = await youtubeAPI.channels.list({
             part: 'contentDetails',
-            id: channelId,
+            id: channelID,
         });
 
-        const playlistId = res.data.items[0].contentDetails.relatedPlaylists.uploads;
+        const playlistId = response.data.items[0].contentDetails.relatedPlaylists.uploads;
 
         // Loop to fetch all videos using pagination
         while (true) {
-            const playlistItemsRes = await youtube.playlistItems.list({
+            const playlistItemsRes = await youtubeAPI.playlistItems.list({
                 part: 'snippet',
                 playlistId: playlistId,
                 maxResults: 50, // Max allowed by the API
@@ -85,11 +85,11 @@ async function getNthVideo(channelId, n) {
 }
 
 // Function to get the number of videos on the channel
-async function getVideoCount(channelId) {
+async function getVideoCount(channelID) {
     try {
-        const res = await youtube.channels.list({
+        const res = await youtubeAPI.channels.list({
             part: 'contentDetails',
-            id: channelId,
+            id: channelID,
         });
 
         const playlistId = res.data.items[0].contentDetails.relatedPlaylists.uploads;
@@ -98,7 +98,7 @@ async function getVideoCount(channelId) {
 
         // Loop to count all videos using pagination
         while (true) {
-            const playlistItemsRes = await youtube.playlistItems.list({
+            const playlistItemsRes = await youtubeAPI.playlistItems.list({
                 part: 'snippet',
                 playlistId: playlistId,
                 maxResults: 50, // Max allowed by the API
@@ -128,7 +128,7 @@ async function getCommentsByUser(videoId, username) {
 
         // Loop to fetch all comments using pagination
         while (true) {
-            const commentsRes = await youtube.commentThreads.list({
+            const commentsRes = await youtubeAPI.commentThreads.list({
                 part: 'snippet',
                 videoId: videoId,
                 maxResults: 100, // Max allowed by the API for commentThreads.list

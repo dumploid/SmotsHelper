@@ -8,7 +8,9 @@ module.exports = {
             .addStringOption(option =>
                 option.setName("command")
                 .setDescription("run command")),
+
         async execute(interaction) {
+            // Will need to add further processing here
             await interaction.reply(`You ran: ${interaction.options.getString("command")}`);
         }
     }

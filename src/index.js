@@ -1,8 +1,7 @@
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('../config.json');
 const { registerCommands } = require('./commands/commandFactory');
 const { initCommandEvent } = require('./commands/commandHandler');
-const { pingCommand } = require('./commands/implementations/utility/ping');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 

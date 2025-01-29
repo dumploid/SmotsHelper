@@ -5,12 +5,13 @@ const {smonsoleCommand} = require("./implementations/smonsole");
 const {smotsCommand} = require("./implementations/smots");
 const {dailySmotsCommand} = require("./implementations/dailySmots");
 const {randomSmotsCommand} = require("./implementations/randomSmots");
+const {commentCommand} = require("./implementations/comment");
 
 const {Collection} = require("discord.js");
 
 function registerCommands() {
     let registeredCommands = new Collection();
-    let commands = [pingCommand, smonsoleCommand, smotsCommand, dailySmotsCommand, randomSmotsCommand];
+    let commands = [pingCommand, smonsoleCommand, smotsCommand, dailySmotsCommand, randomSmotsCommand, commentCommand];
 
     for (let command of commands) {
         initiateCommand(command, registeredCommands);

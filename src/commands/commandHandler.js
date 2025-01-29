@@ -12,11 +12,6 @@ function initCommandEvent(client) {
         if (!interaction.isChatInputCommand()) return;
         const command = interaction.client.commands.get(interaction.commandName);
 
-        if (command === undefined) {
-            console.error(`No command matching ${interaction.commandName} was found.`);
-            return;
-        }
-
         try {
             await command.execute(interaction);
         } catch (error) {

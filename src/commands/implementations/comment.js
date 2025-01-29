@@ -27,17 +27,7 @@ function getArguments(interaction) {
     return {user, episode};
 }
 
-async function getComment(interaction) {
-    let {user, episode} = getArguments(interaction);
-
-    let nthVideo = await getNthVideo(CHANNEL_ID, episode);
-    let comments = (await getCommentsByUser(nthVideo.videoId, user)).map(x=>x.comment);
-
-    if (comments.length === 0){
-        await interaction.reply({content:`No such comments`, ephemeral:true});
-        return;
-    }
-
+function formatComments(comments) {
     //put comments in non-reversed order
     comments = comments.reverse();
 
@@ -50,9 +40,23 @@ async function getComment(interaction) {
     });
 
     //account for characters which don't directly translate over from YT
-    commentsFormatted = commentsFormatted.replaceAll("<br>","\n")
+    return commentsFormatted.replaceAll("<br>","\n")
         .replaceAll("&quot;","\"")
         .replaceAll("&#39;","\'");
+}
 
-    interaction.reply(`Comments by user ${user} on episode ${episode}:` + commentsFormatted);
+async function getComment(interaction) {
+    let {user, episode} = getArguments(interaction);
+
+    let nthVideo = await getNthVideo(CHANNEL_ID, episode);
+    let comments = (await getCommentsByUser(nthVideo.videoId, user)).map(x=>x.comment);
+
+    if (comments.length === 0){
+        await interaction.reply({content:`No such comments`, ephemeral:true});
+        return;
+    }
+
+    let formattedComments = formatComments(comments);
+
+    interaction.reply(`Comments by user ${user} on episode ${episode}:` + formattedComments);
 }

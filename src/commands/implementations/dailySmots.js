@@ -6,7 +6,7 @@ module.exports = {
     dailySmotsCommand: {
         data: new SlashCommandBuilder()
             .setName(`daily-smots`)
-            .setDescription(`Get a random smots video`),
+            .setDescription(`Get the latest smots video`),
 
         async execute(interaction) {
             let videoCount = await getVideoCount(CHANNEL_ID);

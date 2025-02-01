@@ -6,6 +6,7 @@ this file should not be referenced otherwise
 const { REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('../config.json');
 const {registerCommands} = require("./commands/commandFactory");
+const {connection} = require("./utils/SQLutils");
 
 //collect the commands, then map them to their needed JSON format
 const commandJSON = registerCommands().map(x=>x.data.toJSON());
@@ -14,6 +15,11 @@ const rest = new REST().setToken(token);
 
 // deploy commands
 (async () => {
+    connection.connect(function (err) {
+        if (err) throw err;
+        console.log('Connected to DB');
+    });
+
     try {
         console.log(`Started refreshing ${commandJSON.length} application (/) commands.`);
 
@@ -28,4 +34,6 @@ const rest = new REST().setToken(token);
         // catch and log errors
         console.error(error);
     }
+
+    process.exit(0);
 })();

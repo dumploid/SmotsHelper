@@ -159,12 +159,9 @@ async function getCommentsByUser(videoId, username) {
         }
 
         // Return all comments made by the user
-        if (userComments.length > 0) {
-            return userComments;
-        } else {
+        if (userComments.length === 0)
             console.log(`No comments by user "${username}" found on video ID "${videoId}".`);
-            return [];
-        }
+        return userComments;
     } catch (err) {
         console.error('Error fetching comments:', err);
     }

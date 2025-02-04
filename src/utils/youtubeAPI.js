@@ -1,4 +1,4 @@
-const { YOUTUBE_KEY } = require("../../config.json");
+const { YOUTUBE_KEY, CHANNEL_ID } = require("../../config.json");
 const { google } = require('googleapis');
 
 // Initialize the YouTube API client with the API key from environment variables
@@ -167,9 +167,14 @@ async function getCommentsByUser(videoId, username) {
     }
 }
 
+async function videoExists(episode) {
+    return episode <= await getVideoCount(CHANNEL_ID) && episode > 0;
+}
+
 module.exports = {
     getLatestVideo,
     getNthVideo,
     getVideoCount,
     getCommentsByUser,
+    videoExists,
 };

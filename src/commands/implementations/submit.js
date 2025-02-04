@@ -1,9 +1,8 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { isExplanationLocked, addExplanation, prepareExplanation, Explanation} = require("../../utils/mysqlUtils/explanationsUtils");
-const { getVideoCount } = require("../../utils/youtubeAPI");
-const { CHANNEL_ID } = require('../../../config.json');
-const {userExists, addUser} = require("../../utils/mysqlUtils/userUtils");
-const {escape} = require("mysql");
+const { isExplanationLocked, addExplanation, prepareExplanation, Explanation } = require("../../utils/mysqlUtils/explanationsUtils");
+const { videoExists} = require("../../utils/youtubeAPI");
+const { userExists, addUser } = require("../../utils/mysqlUtils/userUtils");
+const { escape } = require("mysql");
 
 module.exports = {
     submitCommand: {
@@ -26,11 +25,10 @@ module.exports = {
 }
 
 async function submitExplanation(interaction) {
-    console.log(`Being called!`);
     let episode = interaction.options.get("episode").value;
     let content = interaction.options.get("content").value;
 
-    if (episode > await getVideoCount(CHANNEL_ID)) {
+    if (!await videoExists(episode)) {
         await interaction.reply("That video doesn't exist!");
         return;
     }

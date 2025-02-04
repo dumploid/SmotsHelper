@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { CHANNEL_ID } = require('../../../config.json');
-const { getVideoCount } = require("../../utils/youtubeAPI");
-const { getExplanation } = require("../../utils/mysqlUtils/explanationsUtils");
+const { videoExists } = require("../../utils/youtubeAPI");
+const { getExplanation, explanationExists } = require("../../utils/mysqlUtils/explanationsUtils");
 
 module.exports = {
     explainCommand: {
@@ -21,14 +20,13 @@ module.exports = {
 
 async function explainEpisode(interaction) {
     let episode = interaction.options.get('episode').value;
-    if (episode > await getVideoCount(CHANNEL_ID)) {
+    if (!await videoExists(episode)) {
         await interaction.reply("That video doesn't exist!");
         return;
     }
 
-    let explanation = await getExplanation(episode);
-    await interaction.reply(explanation === "" ?
-        `No explanation for episode ${episode}`:
-        `Episode ${episode}:\n${explanation}`
+    await interaction.reply(await explanationExists(episode) ?
+        `Episode ${episode}:\n${await getExplanation(episode)}`:
+        `No explanation for episode ${episode}`
     );
 }

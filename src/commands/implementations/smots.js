@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { CHANNEL_ID } = require('../../../config.json');
-const { getVideoCount, getNthVideo } = require("../../utils/youtubeAPI");
+const { getNthVideo, videoExists } = require("../../utils/youtubeAPI");
 
 module.exports = {
     smotsCommand: {
@@ -21,9 +21,8 @@ module.exports = {
 
 async function getSmotsEpisode(interaction) {
     let episode = interaction.options.get("episode").value;
-    let totalVideoCount = await getVideoCount(CHANNEL_ID);
 
-    if (episode > totalVideoCount || episode < 0) {
+    if (!await videoExists(episode)) {
         await interaction.reply("That video doesn't exist!");
         return;
     }

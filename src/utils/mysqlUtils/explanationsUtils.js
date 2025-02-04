@@ -44,6 +44,17 @@ async function isExplanationLocked(episode) {
     });
 }
 
+async function explanationExists(episode) {
+    let sql = `SELECT COUNT(*) AS count FROM Explanations WHERE EpisodeNumber = ?;`;
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, [episode], (err, data) => {
+            if(err) reject(err);
+            resolve(data[0].count > 0);
+        });
+    })
+}
+
 function prepareExplanation(explanation) {
     if(explanation.content === "") explanation.content = null;
     if(explanation.userID === "N/A") explanation.userID = null;
@@ -54,5 +65,6 @@ module.exports = { addExplanation,
     getExplanation,
     isExplanationLocked,
     prepareExplanation,
+    explanationExists,
     Explanation
 };

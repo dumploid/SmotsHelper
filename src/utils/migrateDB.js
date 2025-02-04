@@ -5,7 +5,7 @@ const { readFile } = require("fs");
 const { addExplanation, prepareExplanation, Explanation } = require("./mysqlUtils/explanationsUtils");
 const { connection } = require("./mysqlUtils/SQLutils");
 const { escape } = require("mysql");
-const {userExists, addUser} = require("./mysqlUtils/userUtils");
+const { userExists, addUser } = require("./mysqlUtils/userUtils");
 
 async function transferExplanations() {
     async function transferExplanation(entry) {
@@ -24,7 +24,7 @@ async function transferExplanations() {
 
         // smots is small enough that we don't need to use
         // a unique SQL statement to insert entries in bulk
-        addExplanation(explanation);
+        await addExplanation(explanation);
     }
 
     console.log(`Transferring explanations from ${EXPLANATIONS_FILE}`);
@@ -33,6 +33,8 @@ async function transferExplanations() {
         let explanations = JSON.parse(data.toString());
         for (let entry in explanations) {
             entry = explanations[entry];
+            if(entry.content === "") continue;
+
             await transferExplanation(entry);
         }
     });

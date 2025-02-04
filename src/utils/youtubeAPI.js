@@ -8,11 +8,11 @@ const youtubeAPI = google.youtube({
 });
 
 // Function to get the latest video posted on the channel
-async function getLatestVideo(channelID) {
+async function getLatestVideo() {
     try {
         const response = await youtubeAPI.channels.list({
             part: 'contentDetails',
-            id: channelID,
+            id: CHANNEL_ID,
         });
 
         const playlistID = response.data.items[0].contentDetails.relatedPlaylists.uploads;
@@ -36,13 +36,13 @@ async function getLatestVideo(channelID) {
 }
 
 // Function to get the nth oldest video ever posted on the channel
-async function getNthVideo(channelID, n) {
+async function getNthVideo(n) {
     try {
         let videos = [];
         let nextPageToken = null;
         const response = await youtubeAPI.channels.list({
             part: 'contentDetails',
-            id: channelID,
+            id: CHANNEL_ID,
         });
 
         const playlistId = response.data.items[0].contentDetails.relatedPlaylists.uploads;
@@ -85,11 +85,11 @@ async function getNthVideo(channelID, n) {
 }
 
 // Function to get the number of videos on the channel
-async function getVideoCount(channelID) {
+async function getVideoCount() {
     try {
         const res = await youtubeAPI.channels.list({
             part: 'contentDetails',
-            id: channelID,
+            id: CHANNEL_ID,
         });
 
         const playlistId = res.data.items[0].contentDetails.relatedPlaylists.uploads;
@@ -168,7 +168,7 @@ async function getCommentsByUser(videoId, username) {
 }
 
 async function videoExists(episode) {
-    return episode <= await getVideoCount(CHANNEL_ID) && episode > 0;
+    return episode <= await getVideoCount() && episode > 0;
 }
 
 module.exports = {

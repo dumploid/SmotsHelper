@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { getVideoCount, getLatestVideo } = require("../../utils/youtubeAPI");
-const { CHANNEL_ID } = require('../../../config.json');
 
 module.exports = {
     dailySmotsCommand: {
@@ -9,8 +8,8 @@ module.exports = {
             .setDescription(`Get the latest smots video`),
 
         async execute(interaction) {
-            let videoCount = await getVideoCount(CHANNEL_ID);
-            let latestVideoURL = (await getLatestVideo(CHANNEL_ID)).url;
+            let videoCount = await getVideoCount();
+            let latestVideoURL = (await getLatestVideo()).url;
             await interaction.reply(`Episode:[${videoCount}](${latestVideoURL})`);
         }
 

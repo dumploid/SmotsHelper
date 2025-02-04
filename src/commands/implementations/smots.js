@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { CHANNEL_ID } = require('../../../config.json');
 const { getNthVideo, videoExists } = require("../../utils/youtubeAPI");
 
 module.exports = {
@@ -27,6 +26,6 @@ async function getSmotsEpisode(interaction) {
         return;
     }
 
-    let retrievedVideoURL = (await getNthVideo(CHANNEL_ID, episode)).url;
+    let retrievedVideoURL = (await getNthVideo(episode)).url;
     await interaction.reply(`Episode:[${episode}](${retrievedVideoURL})`);
 }

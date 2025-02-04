@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
 const {getNthVideo, getCommentsByUser} = require("../../utils/youtubeAPI");
-const { CHANNEL_ID } = require('../../../config.json');
 
 module.exports = {
     commentCommand: {
@@ -48,7 +47,7 @@ function formatComments(comments) {
 async function getComment(interaction) {
     let {user, episode} = getArguments(interaction);
 
-    let nthVideo = await getNthVideo(CHANNEL_ID, episode);
+    let nthVideo = await getNthVideo(episode);
     let comments = (await getCommentsByUser(nthVideo.videoId, user)).map(x=>x.comment);
 
     if (comments.length === 0){

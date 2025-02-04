@@ -11,3 +11,4 @@
 /node_modules
 .env
 /src/assets/explanations.json
+/src/assets/scoreboard.json

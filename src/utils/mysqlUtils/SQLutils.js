@@ -6,7 +6,40 @@ const connection = module.exports = mysql.createConnection({
     user: SQL_USER,
     password: SQL_PASSWORD,
     database: SQL_DATABASE,
-    charset: 'utf8mb4' // allows emojis to be stored
+    charset: 'utf8mb4', // allows emojis to be stored
+    multipleStatements: true
 });
 
-module.exports = { connection };
+function connect() {
+    return new Promise(resolve => {
+        connection.connect(function (err) {
+            if (err) throw err;
+            console.log('Connected to DB');
+            resolve();
+        });
+    });
+}
+
+function countInstances(table, column, value) {
+    let sql = `SELECT COUNT(*) AS count FROM ${table} WHERE ${column} = ${value};`;
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, (err, data) => {
+            if(err) reject(err);
+            resolve(data[0].count);
+        });
+    });
+}
+
+function getRows(table) {
+    let sql = `SELECT COUNT(*) AS count FROM ${table};`;
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, (err, data) => {
+            if(err) reject(err);
+            resolve(data[0].count);
+        });
+    });
+}
+
+module.exports = { connection, countInstances, connect, getRows };

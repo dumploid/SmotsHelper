@@ -1,4 +1,4 @@
-const {connection} = require("./SQLutils");
+const {connection, countInstances} = require("./SQLutils");
 
 class Explanation {
     constructor(content, userID, episode, locked = false) {
@@ -9,7 +9,7 @@ class Explanation {
     }
 }
 
-async function addExplanation(explanation) {
+async function createExplanation(explanation) {
     let sql = `REPLACE INTO Explanations(Content, Locked, UserID, EpisodeNumber) VALUES (?, ?, ?, ?);`;
 
     // Parameterized queries are preferred and reduce chance for SQL injections
@@ -21,7 +21,7 @@ async function addExplanation(explanation) {
     });
 }
 
-async function getExplanation(episode) {
+function getExplanation(episode) {
     let sql = `SELECT Content FROM Explanations WHERE EpisodeNumber = ${episode}`;
 
     return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ async function getExplanation(episode) {
     });
 }
 
-async function isExplanationLocked(episode) {
+function isExplanationLocked(episode) {
     let sql = `SELECT Locked FROM Explanations WHERE EpisodeNumber = ${episode}`;
 
     return new Promise((resolve, reject) => {
@@ -45,26 +45,13 @@ async function isExplanationLocked(episode) {
 }
 
 async function explanationExists(episode) {
-    let sql = `SELECT COUNT(*) AS count FROM Explanations WHERE EpisodeNumber = ?;`;
-
-    return new Promise((resolve, reject) => {
-        connection.query(sql, [episode], (err, data) => {
-            if(err) reject(err);
-            resolve(data[0].count > 0);
-        });
-    })
+    return await countInstances(`Explanations`, `EpisodeNumber`, episode) > 0;
 }
 
-function prepareExplanation(explanation) {
-    if(explanation.content === "") explanation.content = null;
-    if(explanation.userID === "N/A") explanation.userID = null;
-    return explanation;
-}
-
-module.exports = { addExplanation,
+module.exports = {
+    createExplanation,
     getExplanation,
     isExplanationLocked,
-    prepareExplanation,
     explanationExists,
     Explanation
 };

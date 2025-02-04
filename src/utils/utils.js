@@ -7,4 +7,8 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
 }
 
-module.exports = {getRandomInt}
+function getRandomElement(array) {
+    return array[Math.floor(Math.random()*array.length)];
+}
+
+module.exports = {getRandomInt, getRandomElement}

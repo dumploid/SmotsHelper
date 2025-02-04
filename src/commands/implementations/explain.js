@@ -1,13 +1,13 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { CHANNEL_ID } = require('../../../config.json');
 const { getVideoCount } = require("../../utils/youtubeAPI");
-const { getExplanation } = require("../../utils/explanationsUtils");
+const { getExplanation } = require("../../utils/mysqlUtils/explanationsUtils");
 
 module.exports = {
     explainCommand: {
         data: new SlashCommandBuilder()
             .setName(`explain`)
-            .setDescription(`"Get a community made explanation for a smots video"`)
+            .setDescription(`Get a community made explanation for a smots video`)
             .addIntegerOption((option) =>
                 option.setName(`episode`)
                     .setDescription(`Which smots episode to explain?`)

@@ -1,12 +1,12 @@
 const mysql = require('mysql')
-const { SQL_HOST, SQL_USER, SQL_PASSWORD, SQL_DATABASE } = require('../../config')
+const { SQL_HOST, SQL_USER, SQL_PASSWORD, SQL_DATABASE } = require('../../../config.json')
 
 const connection = module.exports = mysql.createConnection({
     host: SQL_HOST,
     user: SQL_USER,
     password: SQL_PASSWORD,
     database: SQL_DATABASE,
-    charset: 'utf8mb4'
+    charset: 'utf8mb4' // allows emojis to be stored
 });
 
 module.exports = { connection };

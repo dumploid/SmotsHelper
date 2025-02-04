@@ -3,7 +3,7 @@ const { token } = require('../config.json');
 const { registerCommands } = require('./commands/commandFactory');
 const { initCommandEvent } = require('./commands/commandHandler');
 
-const { connection} = require('./utils/SQLutils');
+const { connection } = require('./utils/mysqlUtils/SQLutils');
 
 setupClient();
 connection.connect(function (err) {

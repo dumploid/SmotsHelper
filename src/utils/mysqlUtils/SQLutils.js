@@ -21,10 +21,10 @@ function connect() {
 }
 
 function countInstances(table, column, value) {
-    let sql = `SELECT COUNT(*) AS count FROM ${table} WHERE ${column} = ${value};`;
+    let sql = `SELECT COUNT(*) AS count FROM ${table} WHERE ${column} = ?;`;
 
     return new Promise((resolve, reject) => {
-        connection.query(sql, (err, data) => {
+        connection.query(sql, [value], (err, data) => {
             if(err) reject(err);
             resolve(data[0].count);
         });

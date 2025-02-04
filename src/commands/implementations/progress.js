@@ -1,14 +1,14 @@
 const { SlashCommandBuilder } = require("discord.js");
 const {countInstances, getRows} = require("../../utils/mysqlUtils/SQLutils");
 const {getVideoCount} = require("../../utils/youtubeAPI");
-const {hearts} = require("../../assets/hearts.json");
+const {hearts} = require("../../assets/miscValues.json");
 const {getRandomElement} = require("../../utils/utils");
 
 module.exports = {
     progressCommand: {
         data: new SlashCommandBuilder()
             .setName(`progress`)
-            .setDescription(`Tells you the precentage of videos we've explained.`),
+            .setDescription(`Tells you the percentage of videos we've explained.`),
 
         async execute(interaction) {
             await displayProgress(interaction);

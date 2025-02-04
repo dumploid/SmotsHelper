@@ -51,5 +51,5 @@ async function submitExplanation(interaction) {
     );
     await addExplanation(explanation);
 
-    await interaction.reply(`Explanation submitted for episode ${episode}:\n${explanation.content}`);
+    await interaction.reply(`Explanation submitted for episode ${episode}:\n${content}`);
 }

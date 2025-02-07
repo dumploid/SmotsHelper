@@ -12,3 +12,4 @@
 .env
 /src/assets/explanations.json
 /src/assets/scoreboard.json
+/src/assets/mods.json

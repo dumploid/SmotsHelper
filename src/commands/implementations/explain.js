@@ -20,7 +20,7 @@ module.exports = {
 
 async function explainEpisode(interaction) {
     let episode = interaction.options.get('episode').value;
-    if (!await videoExists(episode)) {
+    if(!await videoExists(episode)) {
         await interaction.reply("That video doesn't exist!");
         return;
     }

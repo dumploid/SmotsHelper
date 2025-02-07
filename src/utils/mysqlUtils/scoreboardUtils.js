@@ -1,23 +1,19 @@
-const {connection, countInstances} = require("./SQLutils");
+const {countInstances, query} = require("./SQLutils");
 
 async function hasScore(userID) {
     return await countInstances(`Scoreboard`, `UserID`, userID) > 0;
 }
 
-async function addUserScore(userID, score) {
+function addUserScore(userID, score) {
     let sql = `INSERT INTO Scoreboard(UserID, Score) VALUES (?, ?);`;
 
-    await connection.query(sql, [userID, score], (err) => {
-       if (err) { throw err; }
-    });
+    return query(sql, [userID, score]);
 }
 
-async function incrementScore(userID) {
+function incrementScore(userID) {
     let sql = `UPDATE Scoreboard SET score = score + 1 WHERE userID = ?;`;
 
-    await connection.query(sql, [userID], (err) => {
-        if (err) throw err;
-    });
+    return query(sql, [userID]);
 }
 
 module.exports = { hasScore, addUserScore, incrementScore };

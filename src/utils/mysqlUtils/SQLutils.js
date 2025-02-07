@@ -13,33 +13,32 @@ const connection = module.exports = mysql.createConnection({
 function connect() {
     return new Promise(resolve => {
         connection.connect(function (err) {
-            if (err) throw err;
+            if(err) throw err;
             console.log('Connected to DB');
             resolve();
         });
     });
 }
 
-function countInstances(table, column, value) {
+function query(sql, args) {
+    return new Promise((resolve, reject) => {
+       connection.query(sql, args, (err, data) => {
+           if (err) {reject(err)}
+           resolve(data);
+       })
+    });
+}
+
+async function countInstances(table, column, value) {
     let sql = `SELECT COUNT(*) AS count FROM ${table} WHERE ${column} = ?;`;
 
-    return new Promise((resolve, reject) => {
-        connection.query(sql, [value], (err, data) => {
-            if(err) reject(err);
-            resolve(data[0].count);
-        });
-    });
+    return (await query(sql, [value]))[0].count;
 }
 
-function getRows(table) {
+async function getRows(table) {
     let sql = `SELECT COUNT(*) AS count FROM ${table};`;
 
-    return new Promise((resolve, reject) => {
-        connection.query(sql, (err, data) => {
-            if(err) reject(err);
-            resolve(data[0].count);
-        });
-    });
+    return (await query(sql))[0].count;
 }
 
-module.exports = { connection, countInstances, connect, getRows };
+module.exports = { connection, countInstances, connect, getRows, query };

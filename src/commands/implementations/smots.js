@@ -21,11 +21,11 @@ module.exports = {
 async function getSmotsEpisode(interaction) {
     let episode = interaction.options.get("episode").value;
 
-    if (!await videoExists(episode)) {
+    if(!await videoExists(episode)) {
         await interaction.reply("That video doesn't exist!");
         return;
     }
 
     let retrievedVideoURL = (await getNthVideo(episode)).url;
-    await interaction.reply(`Episode:[${episode}](${retrievedVideoURL})`);
+    await interaction.reply(`Episode: [${episode}](${retrievedVideoURL})`);
 }

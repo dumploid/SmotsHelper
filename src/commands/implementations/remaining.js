@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
-const {connection} = require("../../utils/mysqlUtils/SQLutils");
 const {getVideoCount} = require("../../utils/youtubeAPI");
+const {query} = require("../../utils/mysqlUtils/SQLutils");
 
 module.exports = {
     remainingCommand: {
@@ -23,13 +23,7 @@ async function reportRemaining(interaction) {
     let allVideos = Array.from(Array(videoCount).keys()).map((x) => x+1);
 
     let sql = `SELECT EpisodeNumber From Explanations WHERE Locked = True;`;
-
-    let lockedVideos = await new Promise((resolve, reject) => {
-        connection.query(sql, (err, data) => {
-            if(err) reject(err);
-            resolve(data.map((x) => x.EpisodeNumber));
-        });
-    });
+    let lockedVideos = (await query(sql)).map((x) => x.EpisodeNumber);
 
     let unlockedVideos = allVideos.filter((video) => !lockedVideos.includes(video));
     interaction.reply(`We have ${unlockedVideos.length} remaining videos to explain!`);

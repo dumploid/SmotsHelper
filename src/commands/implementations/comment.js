@@ -50,7 +50,7 @@ async function getComment(interaction) {
     let nthVideo = await getNthVideo(episode);
     let comments = (await getCommentsByUser(nthVideo.videoId, user)).map(x=>x.comment);
 
-    if (comments.length === 0){
+    if(comments.length === 0){
         await interaction.reply({content:`No such comments`, ephemeral:true});
         return;
     }

@@ -37,18 +37,18 @@ async function submitExplanation(interaction) {
     let episode = interaction.options.get("episode").value;
     let content = interaction.options.get("content").value;
 
-    if (!await videoExists(episode)) {
+    if(!await videoExists(episode)) {
         await interaction.reply("That video doesn't exist!");
         return;
     }
 
-    if (await explanationExists(episode) && await isExplanationLocked(episode)) {
+    if(await explanationExists(episode) && await isExplanationLocked(episode)) {
         await interaction.reply(`🔒 The explanation for ${episode} is locked and can't be changed. 🔒`);
         return;
     }
 
     {
-        if (!await userExists(interaction.user.id)) {
+        if(!await userExists(interaction.user.id)) {
             await addUser(interaction.user.id, interaction.user.username);
         }
 

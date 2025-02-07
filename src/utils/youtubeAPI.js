@@ -63,13 +63,13 @@ async function getNthVideo(n) {
             nextPageToken = playlistItemsRes.data.nextPageToken;
 
             // Break the loop if there are no more pages
-            if (!nextPageToken) break;
+            if(!nextPageToken) break;
         }
 
         // Sort the videos by published date (oldest first)
         videos.sort((a, b) => new Date(a.snippet.publishedAt) - new Date(b.snippet.publishedAt));
 
-        if (n <= videos.length) {
+        if(n <= videos.length) {
             const nthVideo = videos[n - 1].snippet; // Get nth oldest video (1-indexed)
             return {
                 title: nthVideo.title,
@@ -112,7 +112,7 @@ async function getVideoCount() {
             nextPageToken = playlistItemsRes.data.nextPageToken;
 
             // Break the loop if there are no more pages
-            if (!nextPageToken) break;
+            if(!nextPageToken) break;
         }
 
         return totalVideos;
@@ -140,7 +140,7 @@ async function getCommentsByUser(videoId, username) {
                 const topComment = thread.snippet.topLevelComment.snippet;
 
                 // Match the display name of the comment author
-                if (topComment.authorDisplayName === username) {
+                if(topComment.authorDisplayName === username) {
                     userComments.push({
                         author: topComment.authorDisplayName,
                         comment: topComment.textDisplay,
@@ -155,11 +155,11 @@ async function getCommentsByUser(videoId, username) {
             nextPageToken = commentsRes.data.nextPageToken;
 
             // Break the loop if no more pages are available
-            if (!nextPageToken) break;
+            if(!nextPageToken) break;
         }
 
         // Return all comments made by the user
-        if (userComments.length === 0)
+        if(userComments.length === 0)
             console.log(`No comments by user "${username}" found on video ID "${videoId}".`);
         return userComments;
     } catch (err) {

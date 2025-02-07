@@ -1,4 +1,4 @@
-const {connection, countInstances} = require("./SQLutils");
+const {countInstances, query} = require("./SQLutils");
 
 class Explanation {
     constructor(content, userID, episode, locked = false) {
@@ -9,39 +9,28 @@ class Explanation {
     }
 }
 
-async function createExplanation(explanation) {
+function createExplanation(explanation) {
     let sql = `REPLACE INTO Explanations(Content, Locked, UserID, EpisodeNumber) VALUES (?, ?, ?, ?);`;
 
-    // Parameterized queries are preferred and reduce chance for SQL injections
-    await connection.query(sql, [explanation.content,
+    return query(sql, [explanation.content,
         explanation.locked,
         explanation.userID,
-        explanation.episode], (err) => {
-        if (err) throw err;
-    });
+        explanation.episode]);
 }
 
-function getExplanation(episode) {
+async function getExplanation(episode) {
     let sql = `SELECT Content FROM Explanations WHERE EpisodeNumber = ${episode}`;
-
-    return new Promise((resolve, reject) => {
-        connection.query(sql, (err, data) => {
-            if(err) reject(err);
-            let returnedData = data[0].Content.slice(1,-1);
-            resolve(returnedData);
-        });
-    });
+    return (await query(sql))[0].Content.slice(1,-1);
 }
 
-function isExplanationLocked(episode) {
+async function isExplanationLocked(episode) {
     let sql = `SELECT Locked FROM Explanations WHERE EpisodeNumber = ${episode}`;
+    return (await query(sql))[0].Locked;
+}
 
-    return new Promise((resolve, reject) => {
-        connection.query(sql, (err, data) => {
-            if(err) reject(err);
-            resolve(data[0].Locked);
-        });
-    });
+async function setLocked(episode, locked) {
+    let sql = `UPDATE Explanations SET Locked = ? WHERE EpisodeNumber = ?`;
+    return query(sql, [locked, episode]);
 }
 
 async function explanationExists(episode) {
@@ -53,5 +42,6 @@ module.exports = {
     getExplanation,
     isExplanationLocked,
     explanationExists,
+    setLocked,
     Explanation
 };

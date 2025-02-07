@@ -1,11 +1,9 @@
-const {connection, countInstances} = require("./SQLutils");
+const {countInstances, query} = require("./SQLutils");
 
-async function addUser(userID, username) {
+function addUser(userID, username) {
     let sql = `INSERT INTO Users(UserID, Username) VALUES (?, ?);`
 
-    await connection.query(sql, [userID, username], (err) => {
-        if (err) throw err;
-    });
+    return query(sql, [userID, username]);
 }
 
 async function userExists(userID) {

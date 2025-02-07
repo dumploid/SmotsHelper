@@ -1,4 +1,5 @@
 const {initiateCommand} = require("./commandHandler");
+
 // there probably is a better way to import these ?
 const {pingCommand} = require("./implementations/ping");
 const {smonsoleCommand} = require("./implementations/smonsole");
@@ -9,13 +10,19 @@ const {commentCommand} = require("./implementations/comment");
 const {explainCommand} = require("./implementations/explain");
 const {submitCommand} = require("./implementations/submit");
 const {progressCommand} = require("./implementations/progress");
+const {remainingCommand} = require("./implementations/remaining");
+const {lockCommand} = require("./implementations/lock");
 
 const {Collection} = require("discord.js");
-const {remainingCommand} = require("./implementations/remaining");
 
 function registerCommands() {
     let registeredCommands = new Collection();
-    let commands = [pingCommand, smonsoleCommand, smotsCommand, dailySmotsCommand, randomSmotsCommand, commentCommand, explainCommand, submitCommand, progressCommand, remainingCommand];
+    let commands = [
+        pingCommand,       smonsoleCommand,    smotsCommand,
+        dailySmotsCommand, randomSmotsCommand, commentCommand,
+        explainCommand,    submitCommand,      progressCommand,
+        remainingCommand, lockCommand
+    ];
 
     for (let command of commands) {
         initiateCommand(command, registeredCommands);

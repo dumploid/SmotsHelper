@@ -12,6 +12,8 @@ const {submitCommand} = require("./implementations/submit");
 const {progressCommand} = require("./implementations/progress");
 const {remainingCommand} = require("./implementations/remaining");
 const {lockCommand} = require("./implementations/lock");
+const {appointCommand} = require("./implementations/appoint");
+const {whatToDoCommand} = require("./implementations/whatdoido");
 
 const {Collection} = require("discord.js");
 
@@ -21,7 +23,8 @@ function registerCommands() {
         pingCommand,       smonsoleCommand,    smotsCommand,
         dailySmotsCommand, randomSmotsCommand, commentCommand,
         explainCommand,    submitCommand,      progressCommand,
-        remainingCommand, lockCommand
+        remainingCommand, lockCommand, appointCommand,
+        whatToDoCommand
     ];
 
     for (let command of commands) {

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
-const {countInstances} = require("../../utils/mysqlUtils/SQLutils");
 const {videoExists} = require("../../utils/youtubeAPI");
 const {setLocked} = require("../../utils/mysqlUtils/explanationsUtils");
+const {isMod} = require("../../utils/mysqlUtils/userUtils");
 
 module.exports = {
     lockCommand: {
@@ -28,8 +28,7 @@ async function handleLockCommand(interaction) {
 
     let userID = interaction.user.id;
 
-    let isMod = await countInstances(`Mods`, `UserID`, userID) === 1;
-    if(!isMod) {
+    if(await isMod(userID)) {
         interaction.reply({content:"ur not a mod buckarro :joy: 🦐",ephemeral:true});
         return;
     }

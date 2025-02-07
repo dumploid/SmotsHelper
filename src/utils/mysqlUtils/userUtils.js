@@ -10,4 +10,8 @@ async function userExists(userID) {
     return await countInstances(`Users`, `UserID`, userID) > 0;
 }
 
-module.exports = { userExists, addUser };
+async function isMod(userID) {
+    return await countInstances(`Mods`, `UserID`, userID) === 1;
+}
+
+module.exports = { userExists, addUser, isMod };
